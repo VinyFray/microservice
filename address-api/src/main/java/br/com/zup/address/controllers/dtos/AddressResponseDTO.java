@@ -2,15 +2,20 @@ package br.com.zup.address.controllers.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AddressResponseDTO {
 
-
-    @NotBlank
+    @NotBlank(message = "The 'id' field cannot be empty.")
     private String id;
 
     @NotBlank(message = "The 'street' field cannot be empty.")
@@ -21,8 +26,8 @@ public class AddressResponseDTO {
     @Size(max = 50, message = "The 'city' field must have a maximum of 50 characters.")
     private String city;
 
-    @NotBlank(message = "O campo 'zipCode' não pode estar vazio.")
-    @Size(max = 10, message = "O campo 'zipCode' deve ter no máximo 10 caracteres.")
+    @NotBlank(message = "The 'zipCode' field cannot be empty.")
+    @Size(max = 10, message = "The 'zipCode' field must have a maximum of 10 characters.")
     private String zipCode;
 
     @NotBlank(message = "The 'state' field cannot be empty.")
@@ -33,17 +38,5 @@ public class AddressResponseDTO {
     @Size(max = 36, message = "The 'consumerId' field must have a maximum of 36 characters.")
     private String consumerId;
 
-    public AddressResponseDTO() {
-
-    }
-
-    public AddressResponseDTO(String id, String street, String city, String zipCode, String state, String consumerId) {
-        this.id = id;
-        this.street = street;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.state = state;
-        this.consumerId = consumerId;
-    }
-
 }
+
