@@ -1,6 +1,12 @@
 package br.com.zup.address.controllers.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AddressRequestDTO {
+        @Not
     private String street;
     private String city;
     private String zipCode;
