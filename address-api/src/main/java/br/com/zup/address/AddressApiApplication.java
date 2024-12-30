@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AddressApiApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(AddressApiApplication.class, args);
 	}
 

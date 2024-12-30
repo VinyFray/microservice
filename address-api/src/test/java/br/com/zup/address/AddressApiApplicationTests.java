@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AddressApiApplicationTests {
+public class AddressApiApplicationTests {
 
 	@LocalServerPort
 	private int port;
@@ -19,11 +19,11 @@ class AddressApiApplicationTests {
 	private TestRestTemplate restTemplate;
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
 
 	@Test
-	void shouldReturnDefaultMessage() {
+	public void shouldReturnDefaultMessage() {
 		String url = "http://localhost:" + port + "/addresses";
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
