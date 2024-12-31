@@ -14,7 +14,6 @@ public class ConsumerResponseDTO {
     @NotBlank
     private String id;
 
-
     @NotBlank(message = "The name cannot be blank" )
     @Size(min = 3, max = 20)
     private String name;
