@@ -1,10 +1,10 @@
 package br.com.zup.consumer.controllers;
 
-import br.com.zup.consumer.controllers.dtos.ConsumerRegisterDTO;
+import br.com.zup.consumer.controllers.dtos.ConsumerRequestDTO;
 import br.com.zup.consumer.controllers.dtos.ConsumerResponseDTO;
 import br.com.zup.consumer.models.Consumer;
 import br.com.zup.consumer.services.ConsumerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,20 +12,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/consumer")
+@RequestMapping("/consumers")
 public class ConsumerController {
 
-    @Autowired
-    private ConsumerService consumerService;
+    private final ConsumerService consumerService;
 
-    // Create
+    public ConsumerController(ConsumerService consumerService) {
+        this.consumerService = consumerService;
+    }
+
     @PostMapping
-    public ResponseEntity<ConsumerResponseDTO> createConsumer(@RequestBody ConsumerRegisterDTO consumerRegisterDTO) {
-        Consumer consumer = consumerService.createConsumer(consumerRegisterDTO.toEntity());
+    public ResponseEntity<ConsumerResponseDTO> createConsumer(@Valid @RequestBody ConsumerRequestDTO consumerRequestDTO) {
+        Consumer consumer = consumerService.createConsumer(consumerRequestDTO.toEntity());
         return ResponseEntity.status(201).body(ConsumerResponseDTO.fromEntity(consumer));
     }
 
-    // Read (Get all)
     @GetMapping
     public ResponseEntity<List<ConsumerResponseDTO>> getAllConsumers() {
         List<Consumer> consumers = consumerService.getAllConsumers();
@@ -35,22 +36,18 @@ public class ConsumerController {
         return ResponseEntity.ok(response);
     }
 
-    // Read (Get by ID)
     @GetMapping("/{id}")
     public ResponseEntity<ConsumerResponseDTO> getConsumerById(@PathVariable String id) {
-        Consumer consumer = consumerService.getConsumerById(id)
-                .orElseThrow(() -> new RuntimeException("Consumer not found with id: " + id));
+        Consumer consumer = consumerService.getConsumerById(id);
         return ResponseEntity.ok(ConsumerResponseDTO.fromEntity(consumer));
     }
 
-    // Update
     @PutMapping("/{id}")
-    public ResponseEntity<ConsumerResponseDTO> updateConsumer(@PathVariable String id, @RequestBody ConsumerRegisterDTO consumerRegisterDTO) {
-        Consumer updatedConsumer = consumerService.updateConsumer(id, consumerRegisterDTO.toEntity());
+    public ResponseEntity<ConsumerResponseDTO> updateConsumer(@PathVariable String id, @Valid @RequestBody ConsumerRequestDTO consumerRequestDTO) {
+        Consumer updatedConsumer = consumerService.updateConsumer(id, consumerRequestDTO.toEntity());
         return ResponseEntity.ok(ConsumerResponseDTO.fromEntity(updatedConsumer));
     }
 
-    // Delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteConsumer(@PathVariable String id) {
         consumerService.deleteConsumer(id);

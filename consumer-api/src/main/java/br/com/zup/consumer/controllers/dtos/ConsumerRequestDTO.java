@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ConsumerRegisterDTO {
+public class ConsumerRequestDTO {
 
     @NotBlank(message = "The name cannot be blank" )
     @Size(min = 3, max = 20)
@@ -23,7 +23,7 @@ public class ConsumerRegisterDTO {
     @Email(message = "Out of the norm")
     private String email;
 
-    public ConsumerRegisterDTO() {
+    public ConsumerRequestDTO() {
     }
 
     public Consumer toEntity() {
