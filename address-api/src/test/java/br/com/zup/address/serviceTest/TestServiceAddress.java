@@ -26,93 +26,93 @@ public class TestServiceAddress {
     private AddressRepository addressRepository;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     public void testCreateAddress() {
-        Address address =  new Address("1", "Rua A", "City A", "12345-678", "ST", "Consumer123");
+        Address address = new Address("dcf95dd-f223-4903-9e66-8f524e415286", "Rua Mizael Nogueira 195", "Abadia dos Dourados", "38540-970", "MG", "f8dcf17d-7808-46c8-9265-7b62310dcf5e");
         when(addressRepository.save(any(Address.class))).thenReturn(address);
 
         AddressResponseDTO response = addressService.createAddress(address);
 
-        assertEquals("1", response.getId());
-        assertEquals("Rua A", response.getStreet());
-        assertEquals("City A", response.getCity());
-        assertEquals("12345-678", response.getZipCode());
-        assertEquals("ST", response.getState());
-        assertEquals("Consumer123", response.getConsumerId());
+        assertEquals("dcf95dd-f223-4903-9e66-8f524e415286", response.getId());
+        assertEquals("Rua Mizael Nogueira 195", response.getStreet());
+        assertEquals("Abadia dos Dourados", response.getCity());
+        assertEquals("38540-970", response.getZipCode());
+        assertEquals("MG", response.getState());
+        assertEquals("f8dcf17d-7808-46c8-9265-7b62310dcf5e", response.getConsumerId());
         verify(addressRepository, times(1)).save(any(Address.class));
     }
 
     @Test
     public void testGetAddressById() {
-        Address address = new Address("1", "Rua A", "City A", "12345-678", "ST", "Consumer123");
-        when(addressRepository.findById("1")).thenReturn(Optional.of(address));
+        Address address = new Address("f3a78e1f-568a-47a2-98e7-1ac00573f5f4", "Rua Principal", "Alto Alegre", "89666-970", "SC", "07709e68-6e4c-4801-8017-cc46828f94b6");
+        when(addressRepository.findById("f3a78e1f-568a-47a2-98e7-1ac00573f5f4")).thenReturn(Optional.of(address));
 
-        AddressResponseDTO response = addressService.getAddressById("1");
+        AddressResponseDTO response = addressService.getAddressById("f3a78e1f-568a-47a2-98e7-1ac00573f5f4");
 
-        assertEquals("1", response.getId());
-        assertEquals("Rua A", response.getStreet());
-        assertEquals("City A", response.getCity());
-        assertEquals("12345-678", response.getZipCode());
-        assertEquals("ST", response.getState());
-        assertEquals("Consumer123", response.getConsumerId());
-        verify(addressRepository, times(1)).findById("1");
+        assertEquals("f3a78e1f-568a-47a2-98e7-1ac00573f5f4", response.getId());
+        assertEquals("Rua Principal", response.getStreet());
+        assertEquals("Alto Alegre", response.getCity());
+        assertEquals("89666-970", response.getZipCode());
+        assertEquals("SC", response.getState());
+        assertEquals("07709e68-6e4c-4801-8017-cc46828f94b6", response.getConsumerId());
+        verify(addressRepository, times(1)).findById("f3a78e1f-568a-47a2-98e7-1ac00573f5f4");
     }
 
     @Test
     public void testGetAddressByIdNotFound() {
-        when(addressRepository.findById("1")).thenReturn(Optional.empty());
+        when(addressRepository.findById("dcf95dd-f223-4903-9e66-8f524e415286")).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(AddressNotFoundException.class, () -> {
-            addressService.getAddressById("1");
+            addressService.getAddressById("dcf95dd-f223-4903-9e66-8f524e415286");
         });
 
-        assertEquals("Address not found with id 1", exception.getMessage());
-        verify(addressRepository, times(1)).findById("1");
+        assertEquals("Address not found with id dcf95dd-f223-4903-9e66-8f524e415286", exception.getMessage());
+        verify(addressRepository, times(1)).findById("dcf95dd-f223-4903-9e66-8f524e415286");
     }
 
     @Test
     public void testUpdateAddress() {
-        Address existingAddress = new Address("1", "Rua A", "City A", "12345-678", "ST", "Consumer123");
-        Address updatedAddress = new Address("1", "Rua B", "City B", "98765-432", "SP", "Consumer456");
-        when(addressRepository.findById("1")).thenReturn(Optional.of(existingAddress));
+        Address existingAddress = new Address("dcf95dd-f223-4903-9e66-8f524e415286", "Rua Mizael Nogueira 195", "Alto Alegre", "89666-970", "SC", "07709e68-6e4c-4801-8017-cc46828f94b6");
+        Address updatedAddress = new Address("dcf95dd-f223-4903-9e66-8f524e415286", "Rua Mizael Nogueira 195", "Alto Alegre", "89666-970", "SP", "07709e68-6e4c-4801-8017-cc46828f94b6");
+        when(addressRepository.findById("dcf95dd-f223-4903-9e66-8f524e415286")).thenReturn(Optional.of(existingAddress));
         when(addressRepository.save(any(Address.class))).thenReturn(updatedAddress);
 
-        AddressResponseDTO response = addressService.updateAddress("1", updatedAddress);
+        AddressResponseDTO response = addressService.updateAddress("dcf95dd-f223-4903-9e66-8f524e415286", updatedAddress);
 
-        assertEquals("1", response.getId());
-        assertEquals("Rua B", response.getStreet());
-        assertEquals("City B", response.getCity());
-        assertEquals("98765-432", response.getZipCode());
+        assertEquals("dcf95dd-f223-4903-9e66-8f524e415286", response.getId());
+        assertEquals("Rua Mizael Nogueira 195", response.getStreet());
+        assertEquals("Alto Alegre", response.getCity());
+        assertEquals("89666-970", response.getZipCode());
         assertEquals("SP", response.getState());
-        assertEquals("Consumer456", response.getConsumerId());
-        verify(addressRepository, times(1)).findById("1");
+        assertEquals("07709e68-6e4c-4801-8017-cc46828f94b6", response.getConsumerId());
+        verify(addressRepository, times(1)).findById("dcf95dd-f223-4903-9e66-8f524e415286");
         verify(addressRepository, times(1)).save(any(Address.class));
     }
 
     @Test
     public void testDeleteAddress() {
-        when(addressRepository.existsById("1")).thenReturn(true);
-        doNothing().when(addressRepository).deleteById("1");
+        when(addressRepository.existsById("dcf95dd-f223-4903-9e66-8f524e415286")).thenReturn(true);
+        doNothing().when(addressRepository).deleteById("dcf95dd-f223-4903-9e66-8f524e415286");
 
-        addressService.deleteAddress("1");
+        addressService.deleteAddress("dcf95dd-f223-4903-9e66-8f524e415286");
 
-        verify(addressRepository, times(1)).existsById("1");
-        verify(addressRepository, times(1)).deleteById("1");
+        verify(addressRepository, times(1)).existsById("dcf95dd-f223-4903-9e66-8f524e415286");
+        verify(addressRepository, times(1)).deleteById("dcf95dd-f223-4903-9e66-8f524e415286");
     }
 
     @Test
     public void testDeleteAddressNotFound() {
-        when(addressRepository.existsById("1")).thenReturn(false);
+        when(addressRepository.existsById("dcf95dd-f223-4903-9e66-8f524e415286")).thenReturn(false);
 
         Exception exception = assertThrows(AddressNotFoundException.class, () -> {
-            addressService.deleteAddress("1");
+            addressService.deleteAddress("dcf95dd-f223-4903-9e66-8f524e415286");
         });
 
-        assertEquals("Address not found with id 1", exception.getMessage());
-        verify(addressRepository, times(1)).existsById("1");
+        assertEquals("Address not found with id dcf95dd-f223-4903-9e66-8f524e415286", exception.getMessage());
+        verify(addressRepository, times(1)).existsById("dcf95dd-f223-4903-9e66-8f524e415286");
     }
 }
