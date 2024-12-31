@@ -2,17 +2,17 @@ package br.com.zup.consumer.controllers;
 
 import br.com.zup.consumer.controllers.dtos.ConsumerRequestDTO;
 import br.com.zup.consumer.controllers.dtos.ConsumerResponseDTO;
-import br.com.zup.consumer.models.Consumer;
 import br.com.zup.consumer.services.ConsumerService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/consumers")
+@Slf4j
 public class ConsumerController {
 
     private final ConsumerService consumerService;
@@ -23,34 +23,41 @@ public class ConsumerController {
 
     @PostMapping
     public ResponseEntity<ConsumerResponseDTO> createConsumer(@Valid @RequestBody ConsumerRequestDTO consumerRequestDTO) {
-        Consumer consumer = consumerService.createConsumer(consumerRequestDTO.toEntity());
-        return ResponseEntity.status(201).body(ConsumerResponseDTO.fromEntity(consumer));
+        log.info("Received request to create a consumer");
+        ConsumerResponseDTO response = consumerService.createConsumer(consumerRequestDTO.toEntity());
+        log.info("Consumer created successfully with id: {}", response.getId());
+        return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping
     public ResponseEntity<List<ConsumerResponseDTO>> getAllConsumers() {
-        List<Consumer> consumers = consumerService.getAllConsumers();
-        List<ConsumerResponseDTO> response = consumers.stream()
-                .map(ConsumerResponseDTO::fromEntity)
-                .collect(Collectors.toList());
+        log.info("Received request to fetch all consumers");
+        List<ConsumerResponseDTO> response = consumerService.getAllConsumers();
+        log.info("Fetched {} consumers", response.size());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ConsumerResponseDTO> getConsumerById(@PathVariable String id) {
-        Consumer consumer = consumerService.getConsumerById(id);
-        return ResponseEntity.ok(ConsumerResponseDTO.fromEntity(consumer));
+        log.info("Received request to fetch consumer with id: {}", id);
+        ConsumerResponseDTO response = consumerService.getConsumerById(id);
+        log.info("Consumer with id: {} fetched successfully", id);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ConsumerResponseDTO> updateConsumer(@PathVariable String id, @Valid @RequestBody ConsumerRequestDTO consumerRequestDTO) {
-        Consumer updatedConsumer = consumerService.updateConsumer(id, consumerRequestDTO.toEntity());
-        return ResponseEntity.ok(ConsumerResponseDTO.fromEntity(updatedConsumer));
+        log.info("Received request to update consumer with id: {}", id);
+        ConsumerResponseDTO response = consumerService.updateConsumer(id, consumerRequestDTO.toEntity());
+        log.info("Consumer with id: {} updated successfully", id);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteConsumer(@PathVariable String id) {
+        log.info("Received request to delete consumer with id: {}", id);
         consumerService.deleteConsumer(id);
+        log.info("Consumer with id: {} deleted successfully", id);
         return ResponseEntity.noContent().build();
     }
 }
