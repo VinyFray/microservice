@@ -23,7 +23,12 @@ public class ConsumerAddressRegisterDTO {
     @Email(message = "Out of the norm")
     private String email;
 
+    @NotBlank(message = "Address cannot be blank")
+    private AddressDTO address;
+
+
     public ConsumerAddressRegisterDTO() {
     }
+
 
 }

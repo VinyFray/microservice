@@ -1,5 +1,6 @@
 package br.com.zup.gateway.infra.clients.consumer.dtos;
 
+import br.com.zup.gateway.controllers.dtos.AddressDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -14,7 +14,6 @@ public class ConsumerClient {
     private WebClient webClient;
     private final String URL_BASE = "http://localhost:8081/consumer";
 
-
     public ConsumerResponseDTO registerConsumerClient(ConsumerRegisterDTO registerDTO){
         return webClient
                 .post()
@@ -25,7 +24,6 @@ public class ConsumerClient {
                 .bodyToMono(ConsumerResponseDTO.class)
                 .block();
     }
-
 
     public ConsumerResponseDTO getConsumer(String consumerId){
         return webClient
