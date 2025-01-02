@@ -1,5 +1,6 @@
 package br.com.zup.consumer.services;
 
+import br.com.zup.consumer.controllers.dtos.ConsumerResponseDTO;
 import br.com.zup.consumer.controllers.infra.ConsumerNotFoundException;
 import br.com.zup.consumer.models.Consumer;
 import br.com.zup.consumer.repositories.ConsumerRepository;
@@ -12,33 +13,36 @@ import java.util.List;
 @Service
 public class ConsumerService {
     private static final Logger log = LoggerFactory.getLogger(ConsumerService.class);
-
     private final ConsumerRepository consumerRepository;
 
     public ConsumerService(ConsumerRepository consumerRepository) {
         this.consumerRepository = consumerRepository;
     }
 
-    public Consumer createConsumer(Consumer consumer) {
+    public ConsumerResponseDTO createConsumer(Consumer consumer) {
         log.info("Start create consumer flow");
         validateConsumer(consumer);
         Consumer savedConsumer = consumerRepository.save(consumer);
         log.info("Consumer created successfully with id: {}", savedConsumer.getId());
-        return savedConsumer;
+        return ConsumerResponseDTO.fromEntity(savedConsumer);
     }
 
-    public List<Consumer> getAllConsumers() {
+    public List<ConsumerResponseDTO> getAllConsumers() {
         log.info("Fetching all consumers");
-        return consumerRepository.findAll();
+        return consumerRepository.findAll()
+                .stream()
+                .map(ConsumerResponseDTO::fromEntity)
+                .toList();
     }
 
-    public Consumer getConsumerById(String id) {
+    public ConsumerResponseDTO getConsumerById(String id) {
         log.info("Fetching consumer with id: {}", id);
-        return consumerRepository.findById(id)
+        Consumer consumer = consumerRepository.findById(id)
                 .orElseThrow(() -> new ConsumerNotFoundException("Consumer not found with id: " + id));
+        return ConsumerResponseDTO.fromEntity(consumer);
     }
 
-    public Consumer updateConsumer(String id, Consumer updatedConsumer) {
+    public ConsumerResponseDTO updateConsumer(String id, Consumer updatedConsumer) {
         log.info("Updating consumer with id: {}", id);
         validateConsumer(updatedConsumer);
         return consumerRepository.findById(id).map(consumer -> {
@@ -47,7 +51,7 @@ public class ConsumerService {
             consumer.setEmail(updatedConsumer.getEmail());
             Consumer savedConsumer = consumerRepository.save(consumer);
             log.info("Consumer updated successfully with id: {}", savedConsumer.getId());
-            return savedConsumer;
+            return ConsumerResponseDTO.fromEntity(savedConsumer);
         }).orElseThrow(() -> new ConsumerNotFoundException("Consumer not found with id: " + id));
     }
 

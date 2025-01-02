@@ -11,26 +11,30 @@ import lombok.Setter;
 @Setter
 public class ConsumerRequestDTO {
 
-    @NotBlank(message = "The name cannot be blank" )
+    @NotBlank(message = "The name cannot be blank")
     @Size(min = 3, max = 20)
     private String name;
 
     @NotBlank(message = "Age cannot be blank")
-    @Size(max = 130)
+    @Size(max = 3, message = "Age must be a valid number and less than 130")
     private String age;
 
-    @NotBlank(message = "Email cannot be blank" )
-    @Email(message = "Out of the norm")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
     private String email;
 
-    public ConsumerRequestDTO() {
+    public ConsumerRequestDTO(String name, String age, String email) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
     }
 
     public Consumer toEntity() {
-        Consumer consumer = new Consumer();
-        consumer.setName(this.name);
-        consumer.setAge(this.age);
-        consumer.setEmail(this.email);
-        return consumer;
+        return new Consumer(
+                null,
+                this.name,
+                this.age,
+                this.email
+        );
     }
 }

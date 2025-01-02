@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("/consumers")
 @Slf4j
 public class ConsumerController {
-
     private final ConsumerService consumerService;
 
     public ConsumerController(ConsumerService consumerService) {

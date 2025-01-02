@@ -41,6 +41,40 @@ public class ConsumerAddressService {
         return new ConsumerAddressResponseDTO(consumerResponseDTO, addressResponseDTO);
     }
 
+    public ConsumerAddressResponseDTO getConsumerAddress(String consumerId) {
+        Assert.hasText(consumerId, "Consumer ID cannot be blank");
+        logger.info("Fetching consumer and address for ID: {}", consumerId);
+
+        ConsumerResponseDTO consumerResponseDTO = consumerClient.getConsumer(consumerId);
+        AddressResponseDTO addressResponseDTO = addressClient.getAddressByConsumerId(consumerId);
+
+        return new ConsumerAddressResponseDTO(consumerResponseDTO, addressResponseDTO);
+    }
+
+    public ConsumerAddressResponseDTO updateConsumerAddress(String consumerId, ConsumerAddressRegisterDTO consumerAddressRegisterDTO) {
+        Assert.hasText(consumerId, "Consumer ID cannot be blank");
+        Assert.notNull(consumerAddressRegisterDTO, "ConsumerAddressRegisterDTO cannot be null");
+        logger.info("Updating consumer and address for ID: {}", consumerId);
+
+        ConsumerRegisterDTO consumerRegisterDTO = mapToConsumerRegisterDTO(consumerAddressRegisterDTO);
+        ConsumerResponseDTO updatedConsumer = consumerClient.updateConsumer(consumerId, consumerRegisterDTO);
+
+        AddressRegisterDTO addressRegisterDTO = mapToAddressRegisterDTO(consumerAddressRegisterDTO, consumerId);
+        AddressResponseDTO updatedAddress = addressClient.updateAddress(consumerId, addressRegisterDTO);
+
+        return new ConsumerAddressResponseDTO(updatedConsumer, updatedAddress);
+    }
+
+    public void deleteConsumerAddress(String consumerId) {
+        Assert.hasText(consumerId, "Consumer ID cannot be blank");
+        logger.info("Deleting consumer and address for ID: {}", consumerId);
+
+        addressClient.deleteAddressByConsumerId(consumerId);
+        consumerClient.deleteConsumerById(consumerId);
+
+        logger.info("Successfully deleted consumer and address for ID: {}", consumerId);
+    }
+
     private ConsumerResponseDTO registerConsumer(ConsumerAddressRegisterDTO consumerAddressRegisterDTO) {
         logger.debug("Mapping data for consumer registration.");
         ConsumerRegisterDTO consumerRegisterDTO = mapToConsumerRegisterDTO(consumerAddressRegisterDTO);
@@ -51,10 +85,10 @@ public class ConsumerAddressService {
 
     private AddressResponseDTO registerAddress(ConsumerAddressRegisterDTO consumerAddressRegisterDTO, String consumerId) {
         logger.debug("Mapping data to address registration.");
-        AddressRegisterDTO addressRegisterDto = mapToAddressRegisterDTO(consumerAddressRegisterDTO, consumerId);
+        AddressRegisterDTO addressRegisterDTO = mapToAddressRegisterDTO(consumerAddressRegisterDTO, consumerId);
 
         logger.debug("Sending address data to the external client.");
-        return addressClient.registeAddress(addressRegisterDto);
+        return addressClient.registeAddress(addressRegisterDTO);
     }
 
     private ConsumerRegisterDTO mapToConsumerRegisterDTO(ConsumerAddressRegisterDTO consumerAddressRegisterDTO) {
@@ -72,13 +106,13 @@ public class ConsumerAddressService {
         Assert.notNull(consumerAddressRegisterDTO, "ConsumerAddressRegisterDTO cannot be null");
         Assert.hasText(consumerId, "Consumer ID cannot be blank");
 
-        logger.debug("Mapping ConsumerAddressRegisterDTO para AddressRegisterDto.");
-        AddressRegisterDTO addressRegisterDto = new AddressRegisterDTO();
-        addressRegisterDto.setConsumerId(consumerId);
-        addressRegisterDto.setCity(consumerAddressRegisterDTO.getAddress().getCity());
-        addressRegisterDto.setState(consumerAddressRegisterDTO.getAddress().getState());
-        addressRegisterDto.setStreet(consumerAddressRegisterDTO.getAddress().getStreet());
-        addressRegisterDto.setZipCode(consumerAddressRegisterDTO.getAddress().getZipCode());
-        return addressRegisterDto;
+        logger.debug("Mapping ConsumerAddressRegisterDTO to AddressRegisterDTO.");
+        AddressRegisterDTO addressRegisterDTO = new AddressRegisterDTO();
+        addressRegisterDTO.setConsumerId(consumerId);
+        addressRegisterDTO.setCity(consumerAddressRegisterDTO.getAddress().getCity());
+        addressRegisterDTO.setState(consumerAddressRegisterDTO.getAddress().getState());
+        addressRegisterDTO.setStreet(consumerAddressRegisterDTO.getAddress().getStreet());
+        addressRegisterDTO.setZipCode(consumerAddressRegisterDTO.getAddress().getZipCode());
+        return addressRegisterDTO;
     }
 }

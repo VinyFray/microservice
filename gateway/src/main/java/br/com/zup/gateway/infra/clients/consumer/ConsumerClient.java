@@ -28,9 +28,27 @@ public class ConsumerClient {
     public ConsumerResponseDTO getConsumer(String consumerId){
         return webClient
                 .get()
-                .uri(URL_BASE+"/"+consumerId)
+                .uri(URL_BASE + "/" + consumerId)
                 .retrieve()
                 .bodyToMono(ConsumerResponseDTO.class)
+                .block();
+    }
+
+    public ConsumerResponseDTO updateConsumer(String consumerId, ConsumerRegisterDTO consumerRegisterDTO) {
+        return webClient
+                .put()
+                .uri(URL_BASE + "/" + consumerId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(consumerRegisterDTO)
+                .retrieve()
+                .bodyToMono(ConsumerResponseDTO.class)
+                .block();
+    }
+    public void deleteConsumerById(String consumerId) {
+        webClient.delete()
+                .uri(URL_BASE + "/" + consumerId)
+                .retrieve()
+                .bodyToMono(Void.class)
                 .block();
     }
 }

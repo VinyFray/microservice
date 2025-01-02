@@ -26,12 +26,18 @@ public class ConsumerResponseDTO {
     @Email(message = "Out of the norm")
     private String email;
 
+    public ConsumerResponseDTO(String id, String name, String age, String email) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+    }
     public static ConsumerResponseDTO fromEntity(Consumer consumer) {
-        ConsumerResponseDTO dto = new ConsumerResponseDTO();
-        dto.setId(consumer.getId());
-        dto.setName(consumer.getName());
-        dto.setAge(consumer.getAge());
-        dto.setEmail(consumer.getEmail());
-        return dto;
+        return new ConsumerResponseDTO(
+                consumer.getId(),
+                consumer.getName(),
+                String.valueOf(consumer.getAge()),
+                consumer.getEmail()
+        );
     }
 }
