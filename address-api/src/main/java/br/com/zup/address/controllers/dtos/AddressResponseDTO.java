@@ -5,17 +5,15 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class AddressResponseDTO {
 
-    @NotBlank(message = "The 'id' field cannot be empty.")
+    @NotBlank(message = "Not Blank")
     private String id;
 
     @NotBlank(message = "The 'street' field cannot be empty.")
@@ -38,5 +36,8 @@ public class AddressResponseDTO {
     @Size(max = 36, message = "The 'consumerId' field must have a maximum of 36 characters.")
     private String consumerId;
 
+    public AddressResponseDTO() {
+
+    }
 }
 

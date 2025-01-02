@@ -14,7 +14,6 @@ public class AddressClient {
     private WebClient webClient;
     private final String URL_BASE = "http://localhost:8082/address";
 
-
     public AddressResponseDTO registeAddress(AddressRegisterDto addressRegisterDto){
         return webClient.post()
                 .uri(URL_BASE)
@@ -24,5 +23,4 @@ public class AddressClient {
                 .bodyToMono(AddressResponseDTO.class)
                 .block();
     }
-
 }

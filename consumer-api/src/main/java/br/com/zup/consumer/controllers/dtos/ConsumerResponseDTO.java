@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class ConsumerResponseDTO {
 
-    @NotBlank
+    @NotBlank(message = "Not blank")
     private String id;
 
     @NotBlank(message = "The name cannot be blank" )

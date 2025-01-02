@@ -1,63 +1,38 @@
 package br.com.zup.gateway.infra.clients.address.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AddressResponseDTO {
 
+    @NotBlank(message = "Not blank")
     private String id;
+
+    @NotBlank(message = "The 'street' field cannot be empty.")
+    @Size(max = 100, message = "The 'street' field must have a maximum of 100 characters.")
     private String street;
+
+    @NotBlank(message = "The 'city' field cannot be empty.")
+    @Size(max = 50, message = "The 'city' field must have a maximum of 50 characters.")
     private String city;
+
+    @NotBlank(message = "O campo 'zipCode' não pode estar vazio.")
+    @Size(max = 10, message = "O campo 'zipCode' deve ter no máximo 10 caracteres.")
     private String zipCode;
+
+    @NotBlank(message = "The 'state' field cannot be empty.")
+    @Size(max = 2, message = "The 'state' field must have a maximum of 2 characters.")
     private String state;
+
+    @NotBlank(message = "The 'consumerId' field cannot be empty.")
+    @Size(max = 36, message = "The 'consumerId' field must have a maximum of 36 characters.")
     private String consumerId;
 
     public AddressResponseDTO() {
 
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getConsumerId() {
-        return consumerId;
-    }
-
-    public void setConsumerId(String consumerId) {
-        this.consumerId = consumerId;
     }
 }
