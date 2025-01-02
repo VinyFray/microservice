@@ -1,6 +1,5 @@
 package br.com.zup.gateway.controllers.dtos;
 
-import br.com.zup.gateway.infra.clients.address.dtos.AddressResponseDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -31,14 +30,6 @@ public class AddressDTO {
     private String consumerId;
 
     public AddressDTO() {
-    }
 
-    public AddressDTO(AddressResponseDTO addressResponseDTO) {
-        this.city = addressResponseDTO.getCity();
-        this.consumerId = addressResponseDTO.getConsumerId();
-        this.zipCode = addressResponseDTO.getZipCode();
-        this.state = addressResponseDTO.getState();
-        this.street = addressResponseDTO.getStreet();
     }
-
 }

@@ -19,4 +19,14 @@ public class ConsumerAddressResponseDTO {
         this.consumer = consumerResponseDTO;
         this.address = addressResponseDTO;
     }
+
+    public static class ConsumerDTO extends ConsumerResponseDTO {
+        public ConsumerDTO(String number, String johnDoe, String number1, String mail) {
+        }
+    }
+
+    public static class AddressDTO extends AddressResponseDTO {
+        public AddressDTO(String number, String number1, String s, String springfield, String il, String number2) {
+        }
+    }
 }
