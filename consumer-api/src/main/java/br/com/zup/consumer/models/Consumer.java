@@ -1,48 +1,38 @@
 package br.com.zup.consumer.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import org.hibernate.annotations.UuidGenerator;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Getter
+@Setter
 public class Consumer {
-
     @Id
-    @UuidGenerator
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String age;
+
+    @Column(nullable = false)
     private String email;
 
-    public String getId() {
-        return id;
+    public Consumer() {
     }
 
-    public void setId(String id) {
+    public Consumer(String id, String name, String age, String email) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
         this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
     }
 }

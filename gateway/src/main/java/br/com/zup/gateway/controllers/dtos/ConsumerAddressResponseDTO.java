@@ -2,59 +2,31 @@ package br.com.zup.gateway.controllers.dtos;
 
 import br.com.zup.gateway.infra.clients.address.dtos.AddressResponseDTO;
 import br.com.zup.gateway.infra.clients.consumer.dtos.ConsumerResponseDTO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ConsumerAddressResponseDTO {
-    private String id;
-    private String name;
-    private String age;
-    private String email;
-    private AddressDTO address;
+
+    private ConsumerResponseDTO consumer;
+    private AddressResponseDTO address;
+
+    public ConsumerAddressResponseDTO() {
+    }
 
     public ConsumerAddressResponseDTO(ConsumerResponseDTO consumerResponseDTO, AddressResponseDTO addressResponseDTO) {
-        this.id = consumerResponseDTO.getId();
-        this.name = consumerResponseDTO.getName();
-        this.age = consumerResponseDTO.getAge();
-        this.email = consumerResponseDTO.getEmail();
-        this.address = new AddressDTO(addressResponseDTO);
+        this.consumer = consumerResponseDTO;
+        this.address = addressResponseDTO;
     }
 
-    public String getId() {
-        return id;
+    public static class ConsumerDTO extends ConsumerResponseDTO {
+        public ConsumerDTO(String number, String johnDoe, String number1, String mail) {
+        }
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public AddressDTO getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressDTO address) {
-        this.address = address;
+    public static class AddressDTO extends AddressResponseDTO {
+        public AddressDTO(String number, String number1, String s, String springfield, String il, String number2) {
+        }
     }
 }

@@ -14,7 +14,6 @@ public class ConsumerClient {
     private WebClient webClient;
     private final String URL_BASE = "http://localhost:8081/consumer";
 
-
     public ConsumerResponseDTO registerConsumerClient(ConsumerRegisterDTO registerDTO){
         return webClient
                 .post()
@@ -26,13 +25,30 @@ public class ConsumerClient {
                 .block();
     }
 
-
     public ConsumerResponseDTO getConsumer(String consumerId){
         return webClient
                 .get()
-                .uri(URL_BASE+"/"+consumerId)
+                .uri(URL_BASE + "/" + consumerId)
                 .retrieve()
                 .bodyToMono(ConsumerResponseDTO.class)
+                .block();
+    }
+
+    public ConsumerResponseDTO updateConsumer(String consumerId, ConsumerRegisterDTO consumerRegisterDTO) {
+        return webClient
+                .put()
+                .uri(URL_BASE + "/" + consumerId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(consumerRegisterDTO)
+                .retrieve()
+                .bodyToMono(ConsumerResponseDTO.class)
+                .block();
+    }
+    public void deleteConsumerById(String consumerId) {
+        webClient.delete()
+                .uri(URL_BASE + "/" + consumerId)
+                .retrieve()
+                .bodyToMono(Void.class)
                 .block();
     }
 }

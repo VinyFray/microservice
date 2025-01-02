@@ -1,59 +1,62 @@
 package br.com.zup.consumer.controllers;
 
-import br.com.zup.consumer.controllers.dtos.ConsumerRegisterDTO;
+import br.com.zup.consumer.controllers.dtos.ConsumerRequestDTO;
 import br.com.zup.consumer.controllers.dtos.ConsumerResponseDTO;
-import br.com.zup.consumer.models.Consumer;
 import br.com.zup.consumer.services.ConsumerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/consumer")
+@RequestMapping("/consumers")
+@Slf4j
 public class ConsumerController {
+    private final ConsumerService consumerService;
 
-    @Autowired
-    private ConsumerService consumerService;
-
-    // Create
-    @PostMapping
-    public ResponseEntity<ConsumerResponseDTO> createConsumer(@RequestBody ConsumerRegisterDTO consumerRegisterDTO) {
-        Consumer consumer = consumerService.createConsumer(consumerRegisterDTO.toEntity());
-        return ResponseEntity.status(201).body(ConsumerResponseDTO.fromEntity(consumer));
+    public ConsumerController(ConsumerService consumerService) {
+        this.consumerService = consumerService;
     }
 
-    // Read (Get all)
+    @PostMapping
+    public ResponseEntity<ConsumerResponseDTO> createConsumer(@Valid @RequestBody ConsumerRequestDTO consumerRequestDTO) {
+        log.info("Received request to create a consumer");
+        ConsumerResponseDTO response = consumerService.createConsumer(consumerRequestDTO.toEntity());
+        log.info("Consumer created successfully with id: {}", response.getId());
+        return ResponseEntity.status(201).body(response);
+    }
+
     @GetMapping
     public ResponseEntity<List<ConsumerResponseDTO>> getAllConsumers() {
-        List<Consumer> consumers = consumerService.getAllConsumers();
-        List<ConsumerResponseDTO> response = consumers.stream()
-                .map(ConsumerResponseDTO::fromEntity)
-                .collect(Collectors.toList());
+        log.info("Received request to fetch all consumers");
+        List<ConsumerResponseDTO> response = consumerService.getAllConsumers();
+        log.info("Fetched {} consumers", response.size());
         return ResponseEntity.ok(response);
     }
 
-    // Read (Get by ID)
     @GetMapping("/{id}")
     public ResponseEntity<ConsumerResponseDTO> getConsumerById(@PathVariable String id) {
-        Consumer consumer = consumerService.getConsumerById(id)
-                .orElseThrow(() -> new RuntimeException("Consumer not found with id: " + id));
-        return ResponseEntity.ok(ConsumerResponseDTO.fromEntity(consumer));
+        log.info("Received request to fetch consumer with id: {}", id);
+        ConsumerResponseDTO response = consumerService.getConsumerById(id);
+        log.info("Consumer with id: {} fetched successfully", id);
+        return ResponseEntity.ok(response);
     }
 
-    // Update
     @PutMapping("/{id}")
-    public ResponseEntity<ConsumerResponseDTO> updateConsumer(@PathVariable String id, @RequestBody ConsumerRegisterDTO consumerRegisterDTO) {
-        Consumer updatedConsumer = consumerService.updateConsumer(id, consumerRegisterDTO.toEntity());
-        return ResponseEntity.ok(ConsumerResponseDTO.fromEntity(updatedConsumer));
+    public ResponseEntity<ConsumerResponseDTO> updateConsumer(@PathVariable String id, @Valid @RequestBody ConsumerRequestDTO consumerRequestDTO) {
+        log.info("Received request to update consumer with id: {}", id);
+        ConsumerResponseDTO response = consumerService.updateConsumer(id, consumerRequestDTO.toEntity());
+        log.info("Consumer with id: {} updated successfully", id);
+        return ResponseEntity.ok(response);
     }
 
-    // Delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteConsumer(@PathVariable String id) {
+        log.info("Received request to delete consumer with id: {}", id);
         consumerService.deleteConsumer(id);
+        log.info("Consumer with id: {} deleted successfully", id);
         return ResponseEntity.noContent().build();
     }
 }
