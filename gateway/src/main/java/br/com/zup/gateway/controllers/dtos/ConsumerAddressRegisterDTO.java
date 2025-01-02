@@ -26,9 +26,7 @@ public class ConsumerAddressRegisterDTO {
     @NotBlank(message = "Address cannot be blank")
     private AddressDTO address;
 
-
     public ConsumerAddressRegisterDTO() {
+
     }
-
-
 }

@@ -29,38 +29,38 @@ public class ConsumerAddressService {
     public ConsumerAddressResponseDTO registerConsumerAddress(ConsumerAddressRegisterDTO consumerAddressRegisterDTO) {
         Assert.notNull(consumerAddressRegisterDTO, "ConsumerAddressRegisterDTO cannot be null");
 
-        logger.info("Iniciando o registro do consumidor e endereço.");
+        logger.info("Initiating the registration of the consumer and address.");
 
         ConsumerResponseDTO consumerResponseDTO = registerConsumer(consumerAddressRegisterDTO);
-        logger.info("Consumidor registrado com sucesso. ID: {}", consumerResponseDTO.getId());
+        logger.info("Successfully registered consumer. ID: {}", consumerResponseDTO.getId());
 
         AddressResponseDTO addressResponseDTO = registerAddress(consumerAddressRegisterDTO, consumerResponseDTO.getId());
-        logger.info("Endereço registrado com sucesso para o consumidor ID: {}", consumerResponseDTO.getId());
+        logger.info("Successfully registered address for the consumer ID: {}", consumerResponseDTO.getId());
 
-        logger.info("Registro do consumidor e endereço concluído com sucesso.");
+        logger.info("Consumer registration and address successfully completed.");
         return new ConsumerAddressResponseDTO(consumerResponseDTO, addressResponseDTO);
     }
 
     private ConsumerResponseDTO registerConsumer(ConsumerAddressRegisterDTO consumerAddressRegisterDTO) {
-        logger.debug("Mapeando dados para registro do consumidor.");
+        logger.debug("Mapping data for consumer registration.");
         ConsumerRegisterDTO consumerRegisterDTO = mapToConsumerRegisterDTO(consumerAddressRegisterDTO);
 
-        logger.debug("Enviando dados do consumidor para o cliente externo.");
+        logger.debug("Sending consumer data to the external customer.");
         return consumerClient.registerConsumerClient(consumerRegisterDTO);
     }
 
     private AddressResponseDTO registerAddress(ConsumerAddressRegisterDTO consumerAddressRegisterDTO, String consumerId) {
-        logger.debug("Mapeando dados para registro do endereço.");
+        logger.debug("Mapping data to address registration.");
         AddressRegisterDTO addressRegisterDto = mapToAddressRegisterDTO(consumerAddressRegisterDTO, consumerId);
 
-        logger.debug("Enviando dados do endereço para o cliente externo.");
+        logger.debug("Sending address data to the external client.");
         return addressClient.registeAddress(addressRegisterDto);
     }
 
     private ConsumerRegisterDTO mapToConsumerRegisterDTO(ConsumerAddressRegisterDTO consumerAddressRegisterDTO) {
         Assert.notNull(consumerAddressRegisterDTO, "ConsumerAddressRegisterDTO cannot be null");
 
-        logger.debug("Mapeando ConsumerAddressRegisterDTO para ConsumerRegisterDTO.");
+        logger.debug("Mapping ConsumerAddressRegisterDTO to ConsumerRegisterDTO.");
         ConsumerRegisterDTO consumerRegisterDTO = new ConsumerRegisterDTO();
         consumerRegisterDTO.setAge(consumerAddressRegisterDTO.getAge());
         consumerRegisterDTO.setEmail(consumerAddressRegisterDTO.getEmail());
@@ -72,7 +72,7 @@ public class ConsumerAddressService {
         Assert.notNull(consumerAddressRegisterDTO, "ConsumerAddressRegisterDTO cannot be null");
         Assert.hasText(consumerId, "Consumer ID cannot be blank");
 
-        logger.debug("Mapeando ConsumerAddressRegisterDTO para AddressRegisterDto.");
+        logger.debug("Mapping ConsumerAddressRegisterDTO para AddressRegisterDto.");
         AddressRegisterDTO addressRegisterDto = new AddressRegisterDTO();
         addressRegisterDto.setConsumerId(consumerId);
         addressRegisterDto.setCity(consumerAddressRegisterDTO.getAddress().getCity());

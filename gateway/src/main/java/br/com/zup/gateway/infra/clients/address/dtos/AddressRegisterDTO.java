@@ -29,14 +29,6 @@ public class AddressRegisterDTO {
     @Size(max = 36, message = "The 'consumerId' field must have a maximum of 36 characters.")
     private String consumerId;
 
-    public AddressRegisterDTO(String street, String city, String zipCode, String state, String consumerId) {
-        this.street = street;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.state = state;
-        this.consumerId = consumerId;
-    }
-
     public AddressRegisterDTO() {
 
     }
