@@ -12,7 +12,7 @@ public class ConsumerClient {
 
     @Autowired
     private WebClient webClient;
-    private final String URL_BASE = "http://localhost:8081/consumer";
+    private final String URL_BASE = "http://loclahos:8080";
 
 
     public ConsumerResponseDTO registerConsumerClient(ConsumerRegisterDTO registerDTO){
